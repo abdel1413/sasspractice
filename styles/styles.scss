@@ -1,0 +1,68 @@
+@import "./variables";
+@import "./reset";
+
+//function
+@function fontsize($size) {
+  @return map-get($font-size, $size);
+}
+
+@mixin themes($light-theme: true) {
+  @if $light-theme {
+    background-color: lighten($color: $primaray-col, $amount: 100%);
+    color: darken($color: white, $amount: 100%);
+  }
+}
+
+@mixin flexDirection($direction) {
+  display: flex;
+  flex-direction: $direction;
+}
+
+@mixin mobileSize {
+  @media (max-width: $mobile) {
+    @content;
+  }
+}
+
+body {
+  background-color: $bg;
+}
+
+.light-theme {
+  @include themes(false);
+}
+
+//nesting
+.main {
+  @include flexDirection(row);
+  width: 80%;
+  border: 2px solid red;
+
+  color: $color;
+  margin: 0 auto;
+  font-weight: map-get($map: $ft-weight, $key: bold);
+
+  .header {
+    color: $primaray-col;
+  }
+
+  #{&}__paragraph1 {
+    margin: 10px;
+    font-size: fontsize(larger);
+    &:hover {
+      color: teal;
+    }
+  }
+
+  @include mobileSize {
+    flex-direction: column;
+  }
+  //use @extend to copy p1 feature and add as
+  #{&}__paragraph2 {
+    @extend .main__paragraph1;
+    &:hover {
+      columns: $bg;
+      background-color: $color;
+    }
+  }
+}
